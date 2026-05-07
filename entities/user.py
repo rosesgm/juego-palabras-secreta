@@ -11,7 +11,7 @@ class User:
         self.password = password
         self.profile = profile
 
-
+    @staticmethod
     def save(name: str, email: str, password: str):
         try:
             connection = get_connection()
@@ -29,3 +29,23 @@ class User:
         except Exception as e:
             print(f"Error al guardar el usuario: {e}")
             return False
+    
+    @staticmethod
+    def check_login(email: str, password: str):
+        try:
+            connection = get_connection()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+            
+            sql = "SELECT id, name, email, password, profile FROM user WHERE email = %s"
+            cursor.execute(sql, (email,))
+            user = cursor.fetchone()
+            
+            cursor.close()
+            connection.close()
+            
+            if user and check_password_hash(user['password'], password):
+                return User(user['id'], user['name'], user['email'], user['password'], Profile(user['profile']))
+            return None
+        except Exception as e:
+            print(f"Error al verificar login: {e}")
+            return None
