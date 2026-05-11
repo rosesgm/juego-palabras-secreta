@@ -2,15 +2,16 @@ import pymysql
 from enums.profile import Profile
 from persistence.db import get_connection
 from werkzeug.security import generate_password_hash, check_password_hash
-
+# Clase User que contiene los atributos y metodos de un usuario, tambien se encarga de insertar los datos
 class User:
+    """ atributos de la clase User """
     def __init__(self, id: int, name: str, email: str, password: str, profile: Profile):
         self.id = id
         self.name = name
         self.email = email
         self.password = password
         self.profile = profile
-
+    """ metodo para guardar un usuario en la base de datos mediante una consulta SQL, se utiliza el metodo generate_password_hash para encriptar la contraseña antes de guardarla en la base de datos """
     @staticmethod
     def save(name: str, email: str, password: str):
         try:
@@ -30,6 +31,7 @@ class User:
             print(f"Error al guardar el usuario: {e}")
             return False
     
+    """ metodo para verificar el login de un usuario en la base de datos mediante una consulta SQL, se utiliza el metodo check_password_hash para verificar la contraseña """
     @staticmethod
     def check_login(email: str, password: str):
         try:
