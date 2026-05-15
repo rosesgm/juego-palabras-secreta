@@ -9,3 +9,11 @@ CREATE TABLE IF NOT EXISTS user (
     profile TINYINT(1) NOT NULL DEFAULT 0,
 );
 
+CREATE TABLE IF NOT EXISTS level (
+    id             INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    level_number   TINYINT      NOT NULL UNIQUE,
+    title          VARCHAR(120) NOT NULL,
+    image_filename VARCHAR(255) NOT NULL,
+    hint           TEXT         NOT NULL,
+    encrypted_word TEXT         NOT NULL
+);
