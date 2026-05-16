@@ -2,4 +2,5 @@ vword/
 __pycache__/
 *.pyc
 xrossover/
+sss/
 .gitignore

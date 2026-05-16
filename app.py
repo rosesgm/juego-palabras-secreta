@@ -46,5 +46,9 @@ def login():
         return jsonify({"success": False, "message": "Correo o contraseña incorrectos."}), 401
 
 
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

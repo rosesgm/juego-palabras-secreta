@@ -13,7 +13,7 @@ body{
     background:linear-gradient(135deg,#141e30,#243b55);
 }
 
-#login-form{
+#login-form,#signup-form{
     background:white;
     padding:40px;
     border-radius:15px;
@@ -24,7 +24,7 @@ body{
     box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
 
-#login-form h1{
+#login-form,#signup-form h1{
     text-align:center;
     color:#243b55;
 }
