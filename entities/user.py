@@ -37,9 +37,9 @@ class User (UserMixin):
 
             hash_password = generate_password_hash(password)
 
-            sql = "INSERT INTO user (name, email, password, profile, is_active) VALUES (%s, %s, %s, %s, %s)"
+            sql = "INSERT INTO user (name, email, password, profile) VALUES (%s, %s, %s, %s)"
             cursor.execute(
-                sql, (name, email, hash_password, profile.value, 1))
+                sql, (name, email, hash_password, profile.value))
 
             connection.commit()
             cursor.close()

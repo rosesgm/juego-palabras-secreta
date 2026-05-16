@@ -50,5 +50,31 @@ def login():
 def signup():
     return render_template('signup.html')
 
+@app.route('/api/register', methods=['POST'])
+def register():
+    try:
+        data = request.get_json()
+        
+        nombre = data.get('nombre')
+        email = data.get('email')
+        password = data.get('password')
+        
+        if not nombre or not email or not password:
+            return jsonify({
+                "success": False, 
+                "error": "Todos los campos son obligatorios"
+            }), 400
+        
+        success = User.save(nombre, email, password,Profile.PLAYER)
+        
+        if success:
+            return jsonify({'message': 'Usuario registrado exitosamente'}), 200
+        else:
+            return jsonify({'error': 'Error al guardar en la base de datos'}), 500
+            
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'error': 'Error en el servidor'}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
