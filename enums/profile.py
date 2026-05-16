@@ -1,5 +1,5 @@
 from enum import Enum
 
 class Profile(Enum):
-    ADMIN = 1
-    PLAYER = 2
+    ADMIN = 0
+    PLAYER = 1
