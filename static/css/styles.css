@@ -10,7 +10,11 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#141e30,#243b55);
+
+    background-image: url("../imagenes/fondo_login/fondo_login.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 #login-form{
