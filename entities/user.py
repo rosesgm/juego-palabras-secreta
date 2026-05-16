@@ -2,27 +2,45 @@ import pymysql
 from enums.profile import Profile
 from persistence.db import get_connection
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 # Clase User que contiene los atributos y metodos de un usuario, tambien se encarga de insertar los datos
-class User:
-    """ atributos de la clase User """
-    def __init__(self, id: int, name: str, email: str, password: str, profile: Profile):
+
+
+class User (UserMixin):
+    """ Atributos de la clase User """
+
+    def __init__(self, id: int, name: str, email: str, password: str, profile: Profile,
+                 is_active: bool = True):
         self.id = id
         self.name = name
         self.email = email
         self.password = password
         self.profile = profile
-    """ metodo para guardar un usuario en la base de datos mediante una consulta SQL, se utiliza el metodo generate_password_hash para encriptar la contraseña antes de guardarla en la base de datos """
+        self._is_active = is_active
+
+    @property
+    def is_active(self) -> bool:
+        return self._is_active
+
+    def is_admin(self) -> bool:
+        return self.profile == Profile.ADMIN
+
+    """ metodo para guardar un usuario en la base de datos mediante una consulta SQL,
+     se utiliza el metodo generate_password_hash para encriptar la contraseña 
+     antes de guardarla en la base de datos """
+
     @staticmethod
-    def save(name: str, email: str, password: str):
+    def save(name, email, password, profile=Profile.PLAYER):
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
 
             hash_password = generate_password_hash(password)
 
-            sql = "INSERT INTO user (name, email, password, profile) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql, (name, email, hash_password, 2))
-            
+            sql = "INSERT INTO user (name, email, password, profile, is_active) VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(
+                sql, (name, email, hash_password, profile.value, 1))
+
             connection.commit()
             cursor.close()
             connection.close()
@@ -30,24 +48,52 @@ class User:
         except Exception as e:
             print(f"Error al guardar el usuario: {e}")
             return False
-    
+
     """ metodo para verificar el login de un usuario en la base de datos mediante una consulta SQL, se utiliza el metodo check_password_hash para verificar la contraseña """
     @staticmethod
-    def check_login(email: str, password: str):
+    def check_login(email, password):
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
-            
-            sql = "SELECT id, name, email, password, profile FROM user WHERE email = %s"
+
+            sql = "SELECT id, name, email, password, profile, is_active FROM user WHERE email = %s"
             cursor.execute(sql, (email,))
             user = cursor.fetchone()
-            
+
             cursor.close()
             connection.close()
-            
+
             if user and check_password_hash(user['password'], password):
-                return User(user['id'], user['name'], user['email'], user['password'], Profile(user['profile']))
+                is_active = user['is_active'] == 1
+                return User(user['id'], user['name'], user['email'],
+                            user['password'], Profile(user['profile']), is_active)
             return None
         except Exception as e:
             print(f"Error al verificar login: {e}")
+            return None
+
+    def get_by_id(id):
+        try:
+            connection = get_connection()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+            sql = "SELECT id, name, email, password, profile, is_active FROM user WHERE id = %s"
+            cursor.execute(sql, (id,))
+
+            user = cursor.fetchone()
+
+            cursor.close()
+            connection.close()
+
+            if user:
+                is_active = user["is_active"] == 1
+                return User(user["id"],
+                            user["name"],
+                            user["email"],
+                            user["password"],
+                            Profile(int(user["profile"])),
+                            is_active)
+            return None
+        except Exception as e:
+            print(f"Error al obtener el usuario por ID: {e}")
             return None
