@@ -1,9 +1,10 @@
 import pymysql
 
+
 def get_connection():
-        return pymysql.connect(
+    return pymysql.connect(
         host='localhost',
         user='root',
-        password='admin',
+        password='250597Pi',
         database='crossover_db'
     )

@@ -1,3 +1,4 @@
+#Test para la clase User.
 from entities.user import User
 from enums.profile import Profile
 
