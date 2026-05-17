@@ -20,10 +20,10 @@ document.getElementById('btn-login').addEventListener('click', async () => {
             confirmButtonColor: '#243b55'
         });
     }
+});
 
-    document.getElementById('password').addEventListener('keypress', (e) => {
+document.getElementById('password').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         document.getElementById('btn-login').click();
     }
     });
-});

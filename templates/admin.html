@@ -6,58 +6,62 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <div id="login-form" style="width: 420px;">
-        <h1>Configuración de Niveles</h1>
-
-        <div style="display:flex; flex-direction:column; gap:5px; text-align:left;">
-            <label style="font-size:14px; color:#243b55; font-weight:bold;">Cargar nivel existente:</label>
-            <select id="level-select" style="padding:12px; border-radius:8px; background:#f0f0f0; border:none; font-size:16px;">
-                <option value="">-- Selecciona un nivel --</option>
-                {% for n in niveles %}
-                <option value="{{ n.level_number }}"
-                        data-hint="{{ n.hint }}">
-                    Nivel {{ n.level_number }} — {{ n.title }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
+    <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
         
-        <form id="admin-form" style="display: flex; flex-direction: column; gap: 15px;">
-            <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
-                <label for="level-number" style="font-size: 14px; color: #243b55; font-weight: bold;">Número de Nivel (1-5):</label>
-                <input type="number" id="level-number" min="1" max="5" placeholder="Ej. 1" required>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
-                <label for="level-hint" style="font-size: 14px; color: #243b55; font-weight: bold;">Pista:</label>
-                <input type="text" id="level-hint" placeholder="Pista para la palabra secreta" required>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
-                <label for="level-word" style="font-size: 14px; color: #243b55; font-weight: bold;">Palabra Secreta:</label>
-                <input type="text" id="level-word" placeholder="Palabra que el jugador debe adivinar" required>
-            </div>
-
-            <button type="button" id="btn-save-level" style="margin-top: 10px;">Guardar Nivel</button>
-        </form>
-
-        <div style="text-align: center; margin-top: 5px;">
-            <p><a href="{{ url_for('game') }}">Ver vista del juego</a></p>
+        <div style="background: white; padding: 15px; border-radius: 15px; width: 420px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,.3);">
+            <h1 style="color: #243b55; font-size: 24px; margin: 0;">Desmadre Multiversal</h1>
         </div>
-        <div style="text-align: center; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
-            <a href="#" id="btn-logout" style="color: #d9534f; text-decoration: none; font-size: 14px; font-weight: bold;">Cerrar Sesión</a>
+
+        <div id="login-form" style="width: 420px; margin-top: 0;">
+            <h2 style="font-size: 20px; color: #666; text-align: center; margin-bottom: 15px; font-weight: bold;">Configuración de Niveles</h2>
+
+            <div style="display:flex; flex-direction:column; gap:5px; text-align:left;">
+                <label style="font-size:14px; color:#243b55; font-weight:bold;">Cargar nivel existente:</label>
+                <select id="level-select" style="padding:12px; border-radius:8px; background:#f0f0f0; border:none; font-size:16px;">
+                    <option value="">-- Selecciona un nivel --</option>
+                    {% for n in niveles %}
+                    <option value="{{ n.level_number }}"
+                            data-hint="{{ n.hint }}">
+                        Nivel {{ n.level_number }} — {{ n.title }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <form id="admin-form" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
+                    <label for="level-number" style="font-size: 14px; color: #243b55; font-weight: bold;">Número de Nivel (1-5):</label>
+                    <input type="number" id="level-number" min="1" max="5" placeholder="Ej. 1" required readonly style="background-color: #dcdcdc; cursor: not-allowed; color: #666;">
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
+                    <label for="level-hint" style="font-size: 14px; color: #243b55; font-weight: bold;">Pista:</label>
+                    <input type="text" id="level-hint" placeholder="Pista para la palabra secreta" required>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
+                    <label for="level-word" style="font-size: 14px; color: #243b55; font-weight: bold;">Palabra Secreta:</label>
+                    <input type="text" id="level-word" placeholder="Palabra que el jugador debe adivinar" required>
+                </div>
+
+                <button type="button" id="btn-save-level" style="margin-top: 10px;">Guardar Nivel</button>
+            </form>
+
+            <button type="button" onclick="window.location.href='{{ url_for('game') }}'" style="margin-top: 10px; background: #2e7d32;">Volver al Juego</button>
+
+            <div style="text-align: center; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px;">
+                <a href="#" id="btn-logout" style="color: #d9534f; text-decoration: none; font-size: 14px; font-weight: bold;">Cerrar Sesión</a>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
         window.Swal = window.Swal.mixin({
             heightAuto: false
         });
     </script>
-
     <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
     <script src="{{ url_for('static', filename='js/logout.js') }}"></script>
-    </body>
+</body>
 </html>

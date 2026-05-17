@@ -150,4 +150,4 @@ class Level:
         Returns:
             bool: True si la respuesta es correcta (ignorando mayúsculas y espacios extra), False si no.
         """
-        return decrypt(self.word) == answer.lower().strip()  # n
+        return decrypt(self.word) == answer.lower().strip()

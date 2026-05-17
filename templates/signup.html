@@ -6,29 +6,32 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <form id="signup-form">
-        <h1>Desmadre Multiversal</h1>
-        <input type="text" id="user-name" placeholder="Nombre">
-        <input type="email" id="user-email" placeholder="Correo electrónico">
-        <input type="password" id="user-password" placeholder="Contraseña">
-        <input type="password" id="user-repeat-password" placeholder="Repetir contraseña">
-        <button type="button" id="btn-register">Registrarme</button>
+    <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
         
-        <div class="text-center">
-            <p>¿Ya estás registrado? <br>
-            <a href="{{ url_for('index') }}"> Inicia sesión </a></p>
+        <div style="background: white; padding: 15px; border-radius: 15px; width: 350px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,.3);">
+            <h1 style="color: #243b55; font-size: 24px; margin: 0;">Desmadre Multiversal</h1>
         </div>
-    </form>
 
-    <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
+        <form id="signup-form" style="margin-top: 0;">
+            <h2 style="text-align: center; color: #243b55; font-size: 18px; margin: 0 0 5px 0;">Registro de Cuenta</h2>
+            <input type="text" id="user-name" placeholder="Nombre">
+            <input type="email" id="user-email" placeholder="Correo electrónico">
+            <input type="password" id="user-password" placeholder="Contraseña">
+            <input type="password" id="user-repeat-password" placeholder="Repetir contraseña">
+            <button type="button" id="btn-register">Registrarme</button>
+            
+            <div class="mt-5 text-center">
+                <p>¿Ya estás registrado? <br><a href="{{ url_for('index') }}" class="fw-medium text-primary"> Inicia sesión </a></p>
+            </div>
+        </form>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         window.Swal = window.Swal.mixin({
             heightAuto: false
         });
     </script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
 </body>
 </html>
