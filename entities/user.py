@@ -62,7 +62,7 @@ class User (UserMixin):
             return False
 
     @staticmethod
-    def check_login(email: str, password: str) -> 'User' | None:
+    def check_login(email: str, password: str) -> 'User | None':
         """
         Verifica las credenciales de inicio de sesión de un usuario.
         
@@ -93,7 +93,7 @@ class User (UserMixin):
             return None
 
     @staticmethod
-    def get_by_id(id: int) -> 'User' | None:
+    def get_by_id(id: int) -> 'User | None':
         """
         Obtiene un usuario de la base de datos mediante su ID.
         Requerido por Flask-Login para cargar la sesión del usuario.

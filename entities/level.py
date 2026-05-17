@@ -79,7 +79,7 @@ class Level:
         ]
 
     @staticmethod
-    def get_by_number(level_number: int) -> 'Level' | None:
+    def get_by_number(level_number: int) -> 'Level | None':
         """
         Obtiene un nivel específico buscando por su número de nivel.
         
