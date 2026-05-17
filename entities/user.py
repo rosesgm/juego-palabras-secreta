@@ -7,9 +7,13 @@ from flask_login import UserMixin
 
 
 class User (UserMixin):
-    """ Atributos de la clase User """
+    """
+    Entidad que representa a un usuario del sistema.
+    Hereda de UserMixin para la integración con Flask-Login.
+    """
 
     def __init__(self, id: int, name: str, email: str, password: str, profile: Profile):
+        """Constructor de la clase User."""
         self.id = id
         self.name = name
         self.email = email
@@ -17,14 +21,28 @@ class User (UserMixin):
         self.profile = profile
 
     def is_admin(self) -> bool:
+        """
+        Verifica si el usuario actual tiene rol de Administrador.
+        
+        Returns:
+            bool: True si el perfil es ADMIN, False en caso contrario.
+        """
         return self.profile == Profile.ADMIN
-
-    """ metodo para guardar un usuario en la base de datos mediante una consulta SQL,
-     se utiliza el metodo generate_password_hash para encriptar la contraseña 
-     antes de guardarla en la base de datos """
 
     @staticmethod
     def save(name: str, email: str, password: str, profile: Profile = Profile.PLAYER) -> bool:
+        """
+        Guarda un nuevo usuario en la base de datos encriptando su contraseña.
+        
+        Args:
+            name (str): Nombre del usuario.
+            email (str): Correo electrónico del usuario.
+            password (str): Contraseña en texto plano que se encriptará antes de guardar.
+            profile (Profile, optional): Perfil del usuario. Por defecto es PLAYER.
+            
+        Returns:
+            bool: True si el usuario se guardó correctamente, False si hubo un error.
+        """
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -43,9 +61,18 @@ class User (UserMixin):
             print(f"Error al guardar el usuario: {e}")
             return False
 
-    """ metodo para verificar el login de un usuario en la base de datos mediante una consulta SQL, se utiliza el metodo check_password_hash para verificar la contraseña """
     @staticmethod
     def check_login(email: str, password: str) -> 'User' | None:
+        """
+        Verifica las credenciales de inicio de sesión de un usuario.
+        
+        Args:
+            email (str): Correo electrónico del usuario.
+            password (str): Contraseña ingresada.
+            
+        Returns:
+            User | None: Retorna el objeto User si las credenciales son válidas, None si fallan.
+        """
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -67,6 +94,16 @@ class User (UserMixin):
 
     @staticmethod
     def get_by_id(id: int) -> 'User' | None:
+        """
+        Obtiene un usuario de la base de datos mediante su ID.
+        Requerido por Flask-Login para cargar la sesión del usuario.
+        
+        Args:
+            id (int): Identificador único del usuario.
+            
+        Returns:
+            User | None: Retorna el objeto User si existe, None si no se encuentra.
+        """
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)

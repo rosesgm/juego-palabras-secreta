@@ -8,6 +8,7 @@ class Level:
 
     def __init__(self, id: int | None, level_number: int, title: str,
                  image_filename: str, hint: str, word: str):
+        """Constructor de la clase Level."""
         self.id = id
         self.level_number = level_number
         self.title = title
@@ -18,6 +19,19 @@ class Level:
     @staticmethod
     def save(level_number: int, title: str, image_filename: str,
              hint: str, word: str) -> bool:
+        """
+        Guarda un nuevo nivel en la base de datos, cifrando la palabra secreta.
+        
+        Args:
+            level_number (int): Número que representa el orden del nivel.
+            title (str): Nombre del personaje o nivel.
+            image_filename (str): Nombre del archivo de imagen asociado.
+            hint (str): Pista que se le mostrará al jugador.
+            word (str): Palabra secreta en texto plano (se cifrará).
+            
+        Returns:
+            bool: True si se guardó correctamente, False en caso de error.
+        """
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -38,6 +52,12 @@ class Level:
 
     @staticmethod
     def get_all() -> list['Level']:
+        """
+        Obtiene todos los niveles registrados en la base de datos ordenados por nivel.
+        
+        Returns:
+            list[Level]: Lista de objetos Level.
+        """
         connection = get_connection()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         sql = "SELECT * FROM level ORDER BY level_number ASC"
@@ -60,6 +80,15 @@ class Level:
 
     @staticmethod
     def get_by_number(level_number: int) -> 'Level' | None:
+        """
+        Obtiene un nivel específico buscando por su número de nivel.
+        
+        Args:
+            level_number (int): El número de nivel a buscar.
+            
+        Returns:
+            Level | None: El objeto Level correspondiente o None si no existe.
+        """
         connection = get_connection()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         sql = "SELECT * FROM level WHERE level_number = %s LIMIT 1"
@@ -82,6 +111,17 @@ class Level:
         
     @staticmethod
     def update(level_number: int, hint: str, word: str) -> bool:
+        """
+        Actualiza la pista y la palabra secreta de un nivel existente.
+        
+        Args:
+            level_number (int): Número del nivel a actualizar.
+            hint (str): Nueva pista para el jugador.
+            word (str): Nueva palabra secreta en texto plano.
+            
+        Returns:
+            bool: True si la actualización fue exitosa, False en caso de error.
+        """
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -101,5 +141,13 @@ class Level:
             return False
 
     def check_answer(self, answer: str) -> bool:
-        """Descifra la palabra y compara con la respuesta del jugador."""
+        """
+        Descifra la palabra almacenada en el nivel y la compara con la respuesta del jugador.
+        
+        Args:
+            answer (str): La respuesta ingresada por el jugador.
+            
+        Returns:
+            bool: True si la respuesta es correcta (ignorando mayúsculas y espacios extra), False si no.
+        """
         return decrypt(self.word) == answer.lower().strip()  # n
