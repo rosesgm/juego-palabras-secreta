@@ -3,4 +3,5 @@ __pycache__/
 *.pyc
 xrossover/
 sss/
+.env
 .gitignore
