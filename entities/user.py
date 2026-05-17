@@ -24,7 +24,7 @@ class User (UserMixin):
      antes de guardarla en la base de datos """
 
     @staticmethod
-    def save(name, email, password, profile=Profile.PLAYER):
+    def save(name: str, email: str, password: str, profile: Profile = Profile.PLAYER) -> bool:
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -45,7 +45,7 @@ class User (UserMixin):
 
     """ metodo para verificar el login de un usuario en la base de datos mediante una consulta SQL, se utiliza el metodo check_password_hash para verificar la contraseña """
     @staticmethod
-    def check_login(email, password):
+    def check_login(email: str, password: str) -> 'User' | None:
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -65,7 +65,8 @@ class User (UserMixin):
             print(f"Error al verificar login: {e}")
             return None
 
-    def get_by_id(id):
+    @staticmethod
+    def get_by_id(id: int) -> 'User' | None:
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)

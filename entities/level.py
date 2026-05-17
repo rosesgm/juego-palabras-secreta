@@ -6,7 +6,7 @@ from security.crypto import encrypt, decrypt
 class Level:
     """Entidad que representa un nivel del juego."""
 
-    def __init__(self, id: None, level_number: int, title: str,
+    def __init__(self, id: int | None, level_number: int, title: str,
                  image_filename: str, hint: str, word: str):
         self.id = id
         self.level_number = level_number
@@ -37,7 +37,7 @@ class Level:
             return False
 
     @staticmethod
-    def get_all():
+    def get_all() -> list['Level']:
         connection = get_connection()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         sql = "SELECT * FROM level ORDER BY level_number ASC"
@@ -59,7 +59,7 @@ class Level:
         ]
 
     @staticmethod
-    def get_by_number(level_number: int):
+    def get_by_number(level_number: int) -> 'Level' | None:
         connection = get_connection()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         sql = "SELECT * FROM level WHERE level_number = %s LIMIT 1"
