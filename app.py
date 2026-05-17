@@ -65,7 +65,7 @@ def register():
                 "error": "Todos los campos son obligatorios"
             }), 400
         
-        success = User.save(nombre, email, password,Profile.PLAYER)
+        success = User.save(nombre, email, password, Profile.PLAYER)
         
         if success:
             return jsonify({'message': 'Usuario registrado exitosamente'}), 200
