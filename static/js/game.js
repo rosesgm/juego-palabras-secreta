@@ -31,7 +31,13 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
         document.getElementById('answer-input').value = '';
 
         if (vidas <= 0) {
-            await Swal.fire('¡Perdiste!', 'Se acabaron los intentos', 'error');
+            await Swal.fire({
+                title: '¡Perdiste!',
+                text: 'Se acabaron los intentos',
+                icon: 'error',
+                confirmButtonText: 'Volver a intentar',
+                confirmButtonColor: '#d9534f'
+            });
             window.location.href = '/game/1';
         } else {
             Swal.fire('Incorrecto', `Te quedan ${vidas} intentos`, 'error');

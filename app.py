@@ -63,13 +63,17 @@ def admin():
 
 @app.route('/game')
 @app.route('/game/<int:num>')
-@login_required # Solo bloquea a los que no han iniciado sesión
-def game(num=1):
+@login_required 
+def game(num=0): # Cambiamos a 0 por defecto
     niveles = Level.get_all()
     
     # Evita bucle infinito si la DB está vacía
     if not niveles:
         return render_template('game.html', nivel=None, total=0)
+        
+    # Si entra directo a /game (num=0), se muestra la bienvenida
+    if num == 0:
+        return render_template('game.html', welcome=True)
         
     nivel = Level.get_by_number(num)
     
