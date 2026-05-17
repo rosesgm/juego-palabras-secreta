@@ -13,7 +13,12 @@ document.getElementById('btn-login').addEventListener('click', async () => {
     if (data.success) {
         window.location.href = data.redirect;
     } else {
-        alert(data.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Ha ocurrido un error al iniciar sesión',
+            text: data.message,
+            confirmButtonColor: '#243b55'
+        });
     }
 
     document.getElementById('password').addEventListener('keypress', (e) => {

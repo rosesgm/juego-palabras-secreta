@@ -126,3 +126,33 @@ class User (UserMixin):
         except Exception as e:
             print(f"Error al obtener el usuario por ID: {e}")
             return None
+        
+    @staticmethod
+    def get_by_email(email: str) -> 'User | None':
+        """
+        Busca un usuario en la base de datos por su correo electrónico.
+        
+        Args:
+            email (str): Correo a consultar.
+            
+        Returns:
+            User | None: El objeto User si existe, None en caso contrario.
+        """
+        try:
+            connection = get_connection()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+            sql = "SELECT id, name, email, password, profile FROM user WHERE email = %s"
+            cursor.execute(sql, (email,))
+            user = cursor.fetchone()
+
+            cursor.close()
+            connection.close()
+
+            if user:
+                return User(user["id"], user["name"], user["email"],
+                            user["password"], Profile(int(user["profile"])))
+            return None
+        except Exception as e:
+            print(f"Error al obtener el usuario por email: {e}")
+            return None

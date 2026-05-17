@@ -145,6 +145,13 @@ def register():
                 "error": "Todos los campos son obligatorios"
             }), 400
 
+        # Verificar si el correo ya está registrado
+        if User.get_by_email(email) is not None:
+            return jsonify({
+                "success": False,
+                "error": "El correo electrónico ya se encuentra registrado"
+            }), 400
+
         success = User.save(nombre, email, password, Profile.PLAYER)
 
         if success:
