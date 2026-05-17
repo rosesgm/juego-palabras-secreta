@@ -70,7 +70,7 @@ class User (UserMixin):
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
 
-            sql = "SELECT id, name, email, password, profile, is_active FROM user WHERE id = %s"
+            sql = "SELECT id, name, email, password, profile FROM user WHERE id = %s"
             cursor.execute(sql, (id,))
 
             user = cursor.fetchone()
@@ -79,13 +79,11 @@ class User (UserMixin):
             connection.close()
 
             if user:
-                is_active = user["is_active"] == 1
-                return User(user["id"],
-                            user["name"],
-                            user["email"],
-                            user["password"],
-                            Profile(int(user["profile"])),
-                            is_active)
+
+                return User(user["id"], 
+                user["name"], user["email"],
+                user["password"], 
+                Profile(int(user["profile"])))
             return None
         except Exception as e:
             print(f"Error al obtener el usuario por ID: {e}")
