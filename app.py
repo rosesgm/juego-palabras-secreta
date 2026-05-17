@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from functools import wraps
 from dotenv import load_dotenv
 from entities.user import User
 from entities.level import Level
@@ -15,6 +16,17 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'index'
 
+def admin_required(f):
+    """
+    Decorador de control de acceso basado en roles (RBAC).
+    Redirige a los usuarios que no tengan el rol de administrador hacia la vista del juego.
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin():
+            return redirect(url_for('game'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -23,6 +35,8 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin') if current_user.is_admin() else url_for('game'))
     return render_template('index.html')
 
 
@@ -40,23 +54,30 @@ def login():
     else:
         return jsonify({"success": False, "message": "Correo o contraseña incorrectos."}), 401
 
-
 @app.route('/admin')
 @login_required
+@admin_required
 def admin():
-    if not current_user.is_admin():
-        return redirect(url_for('game'))
     niveles = Level.get_all()
     return render_template('admin.html', niveles=niveles)
 
 @app.route('/game')
 @app.route('/game/<int:num>')
-@login_required
+@login_required # Solo bloquea a los que no han iniciado sesión
 def game(num=1):
+    niveles = Level.get_all()
+    
+    # Evita bucle infinito si la DB está vacía
+    if not niveles:
+        return render_template('game.html', nivel=None, total=0)
+        
     nivel = Level.get_by_number(num)
+    
+    # Si el nivel no existe, lo manda al primero
     if nivel is None:
-        return redirect(url_for('game', num=1))
-    total = len(Level.get_all())
+        return redirect(url_for('game', num=niveles[0].level_number))
+        
+    total = len(niveles)
     return render_template('game.html', nivel=nivel, total=total)
 
 @app.route('/api/level', methods=['POST'])
@@ -72,6 +93,7 @@ def save_level():
 
     if not all([level_number, hint, word]):
         return jsonify({"success": False, "message": "Faltan campos"}), 400
+        
     success = Level.update(level_number, hint, word)
 
     if success:
@@ -81,7 +103,15 @@ def save_level():
 
 @app.route('/signup')
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin') if current_user.is_admin() else url_for('game'))
     return render_template('signup.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route('/api/answer', methods=['POST'])
 @login_required

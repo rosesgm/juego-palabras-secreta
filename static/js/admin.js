@@ -34,7 +34,12 @@ document.getElementById('btn-save-level').addEventListener('click', async () => 
     });
     const data = await response.json();
 
-    data.success
-        ? Swal.fire('¡Guardado!', data.message, 'success')
-        : Swal.fire('Error', data.message, 'error');
+    if (data.success) {
+        await Swal.fire('¡Guardado!', data.message, 'success');
+        // Limpia el formulario y el selector de niveles
+        document.getElementById('admin-form').reset();
+        document.getElementById('level-select').value = "";
+    } else {
+        Swal.fire('Error', data.message, 'error');
+    }
 });

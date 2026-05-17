@@ -54,4 +54,10 @@ document.getElementById('btn-register').addEventListener('click', async function
                 confirmButtonText: 'Intentar de nuevo'
             });
     }
+    
+    document.getElementById('user-repeat-password').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        document.getElementById('btn-register').click();
+    }
+    });
 });

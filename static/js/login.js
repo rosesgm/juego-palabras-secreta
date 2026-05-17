@@ -15,4 +15,10 @@ document.getElementById('btn-login').addEventListener('click', async () => {
     } else {
         alert(data.message);
     }
+
+    document.getElementById('password').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        document.getElementById('btn-login').click();
+    }
+    });
 });
