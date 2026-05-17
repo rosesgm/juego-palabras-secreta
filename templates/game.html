@@ -2,23 +2,36 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Desmadre Multiversal - Juego</title>
+    <title>Desmadre Multiversal{%if nivel%} - {{ nivel.title }}{%endif%}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+{% if nivel %}
     <div id="login-form" style="width: 450px; text-align: center;">
         
-        <h1 id="level-title" style="margin-bottom: 10px;">Nivel 1</h1>
+        <h1 id="level-title" style="margin-bottom: 4px; font-size: 20px; color: #243b55;">
+            {{ nivel.title }}
+        </h1>
+        <p style="font-size: 13px; color: #888; margin-bottom: 10px;">
+            Nivel {{ nivel.level_number }} de {{ total }}
+        </p>
         
         <div style="margin: 10px 0; background: #f0f0f0; border-radius: 8px; padding: 10px;">
-            <img id="character-image" 
-                 src="{{ url_for('static', filename='imagenes/fondo_login/fondo_login.png') }}" 
-                 alt="Imagen del personaje" 
-                 style="max-width: 100%; height: auto; border-radius: 5px;">
+            {% if nivel.image_filename and nivel.image_filename != 'default.png' %}
+                <img id="character-image"
+                     src="{{ url_for('static', filename='imagenes/fondo_login/levels/nivel_' ~ nivel.level_number ~ '.png') }}"
+                     alt="Imagen del nivel"
+                     style="max-width: 100%; max-height: 220px; object-fit: contain; border-radius: 5px;">
+            {% else %}
+                <img id="character-image"
+                     src="{{ url_for('static', filename='imagenes/fondo_login/fondo_login.png') }}"
+                     alt="Imagen del nivel"
+                     style="max-width: 100%; max-height: 220px; object-fit: contain; border-radius: 5px;">
+            {% endif %}
         </div>
 
         <p id="hint-text" style="font-size: 16px; color: #333; margin-bottom: 5px;">
-            <strong>Pista:</strong> <span id="hint-content">Aquí la pista</span>
+            <strong>Pista:</strong> {{ nivel.hint }}
         </p>
 
         <p style="font-size: 14px; color: #d9534f; margin-bottom: 15px;">
@@ -30,6 +43,21 @@
         <button type="button" id="btn-submit">Continuar</button>
     </div>
 
+    <span id="nivel-actual" 
+          data-nivel="{{ nivel.level_number }}" 
+          data-total="{{ total }}" 
+          style="display:none;">
+    </span>
+{% else %}
+    <!-- Sin niveles configurados -->
+    <div id="login-form" style="width: 420px; text-align: center; gap: 15px;">
+        <h1 style="color: #243b55;">🎮 Sin niveles</h1>
+        <p style="color: #666;">El administrador aún no ha configurado ningún nivel.</p>
+        <a href="/" style="color: #243b55; font-weight: bold;">Volver al inicio</a>
+    </div>
+{% endif %}
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     </body>
 </html>

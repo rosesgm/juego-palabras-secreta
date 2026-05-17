@@ -11,7 +11,7 @@ document.getElementById('btn-login').addEventListener('click', async () => {
 
     const data = await response.json();
     if (data.success) {
-        window.location.href = '/game';
+        window.location.href = data.redirect;
     } else {
         alert(data.message);
     }

@@ -79,6 +79,26 @@ class Level:
                 hint=row['hint'],
                 word=row['word']
             )
+        
+    @staticmethod
+    def update(level_number: int, hint: str, word: str) -> bool:
+        try:
+            connection = get_connection()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+            encrypted_word = encrypt(word)
+
+            sql = """UPDATE level 
+                    SET hint = %s, word = %s 
+                    WHERE level_number = %s"""
+            cursor.execute(sql, (hint, encrypted_word, level_number))
+            connection.commit()
+            cursor.close()
+            connection.close()
+            return True
+        except Exception as e:
+            print(f"Error al actualizar el nivel: {e}")
+            return False
 
     def check_answer(self, answer: str) -> bool:
         """Descifra la palabra y compara con la respuesta del jugador."""

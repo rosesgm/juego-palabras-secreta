@@ -1,7 +1,6 @@
 vword/
 __pycache__/
 *.pyc
-xrossover/
 sss/
 .env
 .gitignore

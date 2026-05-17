@@ -36,26 +36,68 @@ def login():
 
     if user:
         login_user(user)
-        return jsonify({"success": True, "message": "Sesión iniciada correctamente"}), 200
+        return jsonify({"success": True, "redirect": "/admin" if user.is_admin() else "/game"}), 200
     else:
         return jsonify({"success": False, "message": "Correo o contraseña incorrectos."}), 401
-
-
-@app.route('/game')
-@login_required
-def game():
-    return render_template('game.html')
 
 
 @app.route('/admin')
 @login_required
 def admin():
-    return render_template('admin.html')
+    if not current_user.is_admin():
+        return redirect(url_for('game'))
+    niveles = Level.get_all()
+    return render_template('admin.html', niveles=niveles)
 
+@app.route('/game')
+@app.route('/game/<int:num>')
+@login_required
+def game(num=1):
+    nivel = Level.get_by_number(num)
+    if nivel is None:
+        return redirect(url_for('game', num=1))
+    total = len(Level.get_all())
+    return render_template('game.html', nivel=nivel, total=total)
+
+@app.route('/api/level', methods=['POST'])
+@login_required
+def save_level():
+    if not current_user.is_admin():
+        return jsonify({"success": False, "message": "No autorizado"}), 403
+
+    data = request.get_json()
+    level_number = data.get('level_number')
+    hint        = data.get('hint')
+    word        = data.get('word')
+
+    if not all([level_number, hint, word]):
+        return jsonify({"success": False, "message": "Faltan campos"}), 400
+    success = Level.update(level_number, hint, word)
+
+    if success:
+        return jsonify({"success": True, "message": "Nivel guardado"}), 200
+    else:
+        return jsonify({"success": False, "message": "Error al guardar"}), 500
 
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
+
+@app.route('/api/answer', methods=['POST'])
+@login_required
+def check_answer():
+    data = request.get_json()
+    level_number = data.get('level_number')
+    answer       = data.get('answer')
+
+    nivel = Level.get_by_number(level_number)
+    if nivel is None:
+        return jsonify({"success": False, "message": "Nivel no encontrado"}), 404
+
+    if nivel.check_answer(answer):
+        return jsonify({"success": True}), 200
+    else:
+        return jsonify({"success": False, "message": "Respuesta incorrecta"}), 200
 
 
 @app.route('/api/register', methods=['POST'])
