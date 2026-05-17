@@ -17,3 +17,5 @@ CREATE TABLE IF NOT EXISTS level (
     hint           TEXT         NOT NULL,
     encrypted_word TEXT         NOT NULL
 );
+-- Cambien el nombre de la columna --
+ALTER TABLE level CHANGE encrypted_word word TEXT NOT NULL;
