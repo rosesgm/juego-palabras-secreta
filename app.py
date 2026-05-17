@@ -43,6 +43,10 @@ def login():
 def game():
     return render_template('game.html')
 
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
 @app.route('/signup')
 def signup():
     return render_template('signup.html')

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Desmadre Multiversal - Administración</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div id="login-form" style="width: 420px;">
+        <h1>Configuración de Niveles</h1>
+        
+        <form id="admin-form" style="display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
+                <label for="level-number" style="font-size: 14px; color: #243b55; font-weight: bold;">Número de Nivel (1-5):</label>
+                <input type="number" id="level-number" min="1" max="5" placeholder="Ej. 1" required>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
+                <label for="level-hint" style="font-size: 14px; color: #243b55; font-weight: bold;">Pista:</label>
+                <input type="text" id="level-hint" placeholder="Pista para la palabra secreta" required>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 5px; text-align: left;">
+                <label for="level-word" style="font-size: 14px; color: #243b55; font-weight: bold;">Palabra Secreta:</label>
+                <input type="text" id="level-word" placeholder="Palabra que el jugador debe adivinar" required>
+            </div>
+
+            <button type="button" id="btn-save-level" style="margin-top: 10px;">Guardar Nivel</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 5px;">
+            <p><a href="{{ url_for('game') }}">Ver vista del juego</a></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </body>
+</html>

@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game</title>
+    <title>Desmadre Multiversal - Juego</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>Game</h1>
-    <p>Welcome to the game!</p>
-</body>
+    <div id="login-form" style="width: 450px; text-align: center;">
+        
+        <h1 id="level-title" style="margin-bottom: 10px;">Nivel 1</h1>
+        
+        <div style="margin: 10px 0; background: #f0f0f0; border-radius: 8px; padding: 10px;">
+            <img id="character-image" 
+                 src="{{ url_for('static', filename='imagenes/fondo_login/fondo_login.png') }}" 
+                 alt="Imagen del personaje" 
+                 style="max-width: 100%; height: auto; border-radius: 5px;">
+        </div>
+
+        <p id="hint-text" style="font-size: 16px; color: #333; margin-bottom: 5px;">
+            <strong>Pista:</strong> <span id="hint-content">Aquí la pista</span>
+        </p>
+
+        <p style="font-size: 14px; color: #d9534f; margin-bottom: 15px;">
+            Intentos restantes: <strong id="lives-count">3</strong>
+        </p>
+
+        <input type="text" id="answer-input" placeholder="Ingresa la palabra secreta" autocomplete="off">
+        
+        <button type="button" id="btn-submit">Continuar</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </body>
 </html>
