@@ -9,18 +9,12 @@ from flask_login import UserMixin
 class User (UserMixin):
     """ Atributos de la clase User """
 
-    def __init__(self, id: int, name: str, email: str, password: str, profile: Profile,
-                 is_active: bool = True):
+    def __init__(self, id: int, name: str, email: str, password: str, profile: Profile):
         self.id = id
         self.name = name
         self.email = email
         self.password = password
         self.profile = profile
-        self._is_active = is_active
-
-    @property
-    def is_active(self) -> bool:
-        return self._is_active
 
     def is_admin(self) -> bool:
         return self.profile == Profile.ADMIN
@@ -56,7 +50,7 @@ class User (UserMixin):
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
 
-            sql = "SELECT id, name, email, password, profile, is_active FROM user WHERE email = %s"
+            sql = "SELECT id, name, email, password, profile FROM user WHERE email = %s"
             cursor.execute(sql, (email,))
             user = cursor.fetchone()
 
@@ -64,9 +58,8 @@ class User (UserMixin):
             connection.close()
 
             if user and check_password_hash(user['password'], password):
-                is_active = user['is_active'] == 1
                 return User(user['id'], user['name'], user['email'],
-                            user['password'], Profile(user['profile']), is_active)
+                            user['password'], Profile(user['profile']))
             return None
         except Exception as e:
             print(f"Error al verificar login: {e}")

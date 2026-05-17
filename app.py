@@ -35,16 +35,13 @@ def login():
     user = User.check_login(email, password)
 
     if user:
-        if not user.is_active:
-            return jsonify({
-                "success": False,
-                "message": "Tu cuenta ha sido desactivada."
-            }), 403
         login_user(user)
         return jsonify({"success": True, "message": "Sesión iniciada correctamente"}), 200
     else:
         return jsonify({"success": False, "message": "Correo o contraseña incorrectos."}), 401
-
+@app.route('/game')
+def game():
+    return render_template('game.html')
 
 @app.route('/signup')
 def signup():
