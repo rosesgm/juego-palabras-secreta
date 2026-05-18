@@ -6,5 +6,5 @@ def get_connection():
         host='localhost',
         user='root',
         password='admin',
-        database='64571ok.'
+        database='crossover_db'
     )
