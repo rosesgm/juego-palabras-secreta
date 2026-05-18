@@ -23,7 +23,7 @@ document.getElementById('btn-submit').addEventListener('click', async () => {
             window.location.href = `/game/${nivelActual + 1}`;
         } else {
             await Swal.fire('¡Ganaste!', '¡Completaste todos los niveles!', 'success');
-            window.location.href = '/';
+            window.location.href = '/victory';
         }
     } else {
         vidas--;

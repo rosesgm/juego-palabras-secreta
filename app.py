@@ -167,6 +167,10 @@ def register():
         print(f"Error: {e}")
         return jsonify({'error': 'Error en el servidor'}), 500
 
+@app.route('/victory')
+@login_required
+def victory():
+    return render_template('victory.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
