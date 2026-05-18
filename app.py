@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, Response, render_template, request, redirect, url_for, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from functools import wraps
 from dotenv import load_dotenv
@@ -57,7 +57,7 @@ def login():
 @app.route('/admin')
 @login_required
 @admin_required
-def admin():
+def admin(): 
     niveles = Level.get_all()
     return render_template('admin.html', niveles=niveles)
 
@@ -106,7 +106,7 @@ def save_level():
         return jsonify({"success": False, "message": "Error al guardar"}), 500
 
 @app.route('/signup')
-def signup():
+def signup() -> Response:
     if current_user.is_authenticated:
         return redirect(url_for('admin') if current_user.is_admin() else url_for('game'))
     return render_template('signup.html')
