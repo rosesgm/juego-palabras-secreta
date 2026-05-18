@@ -24,7 +24,7 @@ ALTER TABLE level CHANGE encrypted_word word TEXT NOT NULL;
 INSERT INTO level (level_number, title, image_filename, hint, word) VALUES
 (1, 'My Little Pony',  'nivel_1.png', 'Configura la pista desde el admin', 'palabra'),
 (2, 'TWICE',           'nivel_2.png', 'Configura la pista desde el admin', 'palabra'),
-(3, 'Brainrot',        'nivel_3.png', 'Configura la pista desde el admin', 'palabra'),
+(3, 'Ben 10',          'nivel_3.png', 'Configura la pista desde el admin', 'palabra'),
 (4, 'BTS',             'nivel_4.png', 'Configura la pista desde el admin', 'palabra'),
 (5, 'Sorpresa',        'nivel_5.png', 'Configura la pista desde el admin', 'palabra');
 
