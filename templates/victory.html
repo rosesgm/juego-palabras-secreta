@@ -66,12 +66,12 @@
         </div>
 
         <div class="victory-box">
-            <div class="trophy">🏆</div>
+            <img src="{{ url_for('static', filename='imagenes/fondo_login/mil_besitos.png') }}" style="width: 250px; border-radius: 50%; animation: bounce 1s infinite alternate;">
             <h2 class="victory-title">¡Lo lograste, {{ current_user.name }}!</h2>
             <p class="victory-sub">Completaste todos los niveles del Desmadre Multiversal.<br>Eres un verdadero crack del multiverso.</p>
 
             <button class="btn-play-again" onclick="window.location.href='/game'">
-                🔁 Jugar de nuevo
+                 Jugar de nuevo
             </button>
 
             <div style="border-top:1px solid #ddd; padding-top:15px; margin-top:5px;">
@@ -82,7 +82,6 @@
         </div>
     </div>
 
-    <!-- Confetti ligero sin librerías externas -->
     <script>
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
@@ -122,7 +121,7 @@
             requestAnimationFrame(draw);
         }
         draw();
-        // Para el confetti después de 6 segundos
+
         setTimeout(() => running = false, 6000);
     </script>
 
